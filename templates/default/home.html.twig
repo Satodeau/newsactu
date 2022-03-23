@@ -1,0 +1,30 @@
+{% extends 'base.html.twig'%}
+
+{% block body %}
+
+    <h1 class="text-center my-3">Tous les articles</h1>
+
+    {%  include 'include/_flashes.html.twig' %}
+<div class="row">
+
+        {% for article in articles %}
+            <div class="col-3 my-3 ms-2 mx-auto">
+
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('uploads/') ~ article.photo }}" class="card-img-top img-card-custom" width="230" height="130" alt="{{ article.title }}">
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title | length > 20 ? article.title|slice(0,20) ~ '...' : article.title }}</h5>
+                        <h6 class="card-title">{{ article.subtitle | length > 20 ? article.title|slice(0,20) ~ '...' : article.subtitle }}</h6>
+                        <p class="card-text">{{article.content | length > 50 ? article.content|slice(0,50) ~ '...' : article.content}}</p>
+                        
+                        <a href="{{ path('show_article', { 'cat_alias': article.category.alias|lower, 'article_alias': article.alias, 'id': article.id })}}" class="btn btn-warning">Voir l'article</a>
+                    </div>
+                </div>
+            </div>
+            
+        {% endfor %}   
+</div>
+
+
+{% endblock %}

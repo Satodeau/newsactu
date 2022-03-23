@@ -1,0 +1,104 @@
+{%  extends "base.html.twig" %}
+
+{% block body %}
+
+    <h1 class="text-center">Tableau de Bord</h1>
+
+    {% include 'include/_flashes.html.twig' %}
+
+    <h3 class="text-center">Tous les articles</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Catégorie</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>Crée le</th>
+                <th>Modifié le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for article in articles | reverse %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.category.name }}</td>
+                    <td>{{ article.title | length > 20 ? article.title | slice(0,20) ~ '...' : article.title }}</td>
+                    <td>{{ article.content | length > 20 ? article.content|slice(0,20)~ '...': article.content }}</td>
+                    <td>{{ article.createdAt | date('d/m/Y') }}</td>
+                    <td>{{ article.updatedAt | date('d/m/Y') }}</td>
+                    <td>
+
+                        {% if article.deletedAt is null %}
+
+                            <a href="{{ path ('update_article', {'id': article.id} ) }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                            <a href="{{ path ('soft_delete_article', {'id': article.id} ) }}" onclick="return confirm('Voulez-vous vraiment archiver cette article ?')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+
+                        {% else %}
+
+                            <a href="{{ path ('restore_article', {'id': article.id} ) }}" class="btn btn-outline-info"><i class="fa fa-trash-restore"></i></a>
+                            <a href="{{ path ('hard_delete_article', {'id': article.id} ) }}" onclick="return confirm('Voulez-vous vraiment supprimer définitivement cette article de la base de données ?')" class="btn btn-outline-danger"><i class="fas fa-times-circle"></i></a>
+
+                        {% endif %}
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row my-3">
+        <div class="col-6">
+        <h3 class="text-center">Toutes les catégories</h3>
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Créee le</th>
+                <th>Modifiée le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.createdAt | date('d/m/Y') }}</td>
+                    <td>{{ category.updatedAt | date('d/m/Y') }}</td>
+                    <td>
+
+                        {% if category.deletedAt is null %}
+
+                            <a href="" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                            <a href="" onclick="return confirm('Voulez-vous vraiment archiver cette catégorie ?')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+
+                        {% else %}
+
+                            <a href="" class="btn btn-outline-info"><i class="fa fa-trash-restore"></i></a>
+                            <a href="" onclick="return confirm('Voulez-vous vraiment supprimer définitivement cette catégorie de la base de données ?')" class="btn btn-outline-danger"><i class="fas fa-times-circle"></i></a>
+
+                        {% endif %}
+                    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        </div>
+        <div class="row">
+            <div class="col-6">
+        <h3 class="text-center">Toutes les catégories</h3>
+
+            
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
